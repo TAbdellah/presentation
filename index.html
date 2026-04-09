@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>وراء الشاشة — تحليل نقدي لألعاب الحرب</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #0a0a0f;
+  --dark: #111118;
+  --card: #16161f;
+  --border: rgba(255,255,255,0.07);
+  --red: #e63946;
+  --orange: #f4a261;
+  --gold: #f7c948;
+  --green: #2ec27e;
+  --blue: #4cc9f0;
+  --purple: #a78bfa;
+  --text: #f0f0f5;
+  --muted: #8888a0;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--black);
+  color:var(--text);
+  font-family:'Cairo',sans-serif;
+  line-height:1.7;
+  overflow-x:hidden;
+}
+
+/* HERO */
+.hero{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+  padding:2rem;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(230,57,70,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 20% 80%, rgba(167,139,250,0.12) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 40% at 80% 70%, rgba(76,201,240,0.10) 0%, transparent 50%);
+  z-index:0;
+}
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size:60px 60px;
+  z-index:0;
+}
+.hero-content{position:relative;z-index:1;max-width:900px}
+.hero-badge{
+  display:inline-block;
+  background:rgba(230,57,70,0.15);
+  border:1px solid rgba(230,57,70,0.3);
+  color:var(--red);
+  font-size:13px;
+  padding:6px 18px;
+  border-radius:50px;
+  margin-bottom:2rem;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  animation:fadeUp 0.6s ease both;
+}
+.hero h1{
+  font-family:'Tajawal',sans-serif;
+  font-size:clamp(2.5rem,7vw,5rem);
+  font-weight:900;
+  line-height:1.1;
+  margin-bottom:1.5rem;
+  animation:fadeUp 0.6s 0.1s ease both;
+}
+.hero h1 .accent{color:var(--red)}
+.hero h1 .accent2{color:var(--gold)}
+.hero-sub{
+  font-size:1.1rem;
+  color:var(--muted);
+  max-width:600px;
+  margin:0 auto 2.5rem;
+  animation:fadeUp 0.6s 0.2s ease both;
+}
+.hero-stats{
+  display:flex;
+  gap:2rem;
+  justify-content:center;
+  flex-wrap:wrap;
+  animation:fadeUp 0.6s 0.3s ease both;
+}
+.hero-stat{text-align:center}
+.hero-stat .num{
+  font-size:2rem;
+  font-weight:900;
+  font-family:'Tajawal',sans-serif;
+  color:var(--gold);
+  display:block;
+}
+.hero-stat .lbl{font-size:12px;color:var(--muted)}
+.scroll-hint{
+  position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);
+  color:var(--muted);font-size:12px;letter-spacing:2px;
+  animation:bounce 2s infinite;
+}
+
+/* SECTIONS */
+.section{padding:5rem 1.5rem;max-width:1100px;margin:0 auto}
+.section-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:12px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--red);margin-bottom:1rem;
+}
+.section-tag::before{
+  content:'';width:20px;height:1px;background:var(--red);display:block;
+}
+.section h2{
+  font-family:'Tajawal',sans-serif;
+  font-size:clamp(1.8rem,4vw,2.8rem);
+  font-weight:700;
+  margin-bottom:3rem;
+  color:var(--text);
+}
+
+/* COMPANY CARDS */
+.company-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.company-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:20px;
+  overflow:hidden;
+  transition:transform 0.3s, border-color 0.3s;
+}
+.company-card:hover{transform:translateY(-4px)}
+.company-card.pubg:hover{border-color:rgba(247,201,72,0.4)}
+.company-card.freefire:hover{border-color:rgba(230,57,70,0.4)}
+.cc-header{
+  padding:2rem;
+  display:flex;align-items:center;gap:1rem;
+  border-bottom:1px solid var(--border);
+}
+.cc-logo{
+  width:56px;height:56px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.8rem;font-weight:900;font-family:'Tajawal',sans-serif;
+}
+.pubg .cc-logo{background:rgba(247,201,72,0.15);color:var(--gold)}
+.freefire .cc-logo{background:rgba(230,57,70,0.15);color:var(--red)}
+.cc-name{font-size:1.2rem;font-weight:700}
+.cc-origin{font-size:12px;color:var(--muted)}
+.cc-body{padding:1.5rem}
+.cc-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 0;border-bottom:1px solid var(--border);font-size:14px;
+}
+.cc-row:last-child{border:none}
+.cc-row .key{color:var(--muted)}
+.cc-row .val{font-weight:600}
+.pubg .val{color:var(--gold)}
+.freefire .val{color:var(--red)}
+
+/* REVENUE SECTION */
+.revenue-section{
+  background:linear-gradient(135deg, rgba(230,57,70,0.05), rgba(167,139,250,0.05));
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:3rem;
+  margin-bottom:2rem;
+}
+.big-number{
+  font-family:'Tajawal',sans-serif;
+  font-size:clamp(3rem,8vw,6rem);
+  font-weight:900;
+  line-height:1;
+}
+.metric-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:2rem}
+.metric{
+  background:rgba(255,255,255,0.03);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:1.5rem;
+  text-align:center;
+}
+.metric .m-val{
+  font-family:'Tajawal',sans-serif;
+  font-size:1.8rem;font-weight:900;
+  display:block;margin-bottom:4px;
+}
+.metric .m-label{font-size:12px;color:var(--muted)}
+
+/* BAR CHART */
+.bar-section{margin:2rem 0}
+.bar-item{margin-bottom:1rem}
+.bar-meta{display:flex;justify-content:space-between;margin-bottom:6px;font-size:13px}
+.bar-track{height:8px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;transition:width 1.5s cubic-bezier(.4,0,.2,1)}
+
+/* COMPARISON TABLE */
+.compare-wrap{overflow-x:auto;border-radius:16px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{
+  background:rgba(255,255,255,0.04);
+  padding:14px 20px;font-weight:600;
+  color:var(--muted);text-align:right;
+  border-bottom:1px solid var(--border);
+}
+td{
+  padding:14px 20px;
+  border-bottom:1px solid var(--border);
+}
+tr:last-child td{border:none}
+tr:hover td{background:rgba(255,255,255,0.02)}
+.tag{
+  display:inline-block;
+  padding:3px 10px;border-radius:50px;
+  font-size:11px;font-weight:600;
+}
+.tag-red{background:rgba(230,57,70,0.15);color:var(--red)}
+.tag-gold{background:rgba(247,201,72,0.15);color:var(--gold)}
+.tag-green{background:rgba(46,194,126,0.15);color:var(--green)}
+
+/* PSYCHOLOGY SECTION */
+.psych-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}
+.psych-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:16px;padding:1.5rem;
+  border-top:3px solid transparent;
+  transition:transform 0.3s;
+}
+.psych-card:hover{transform:translateY(-3px)}
+.psych-card.p1{border-top-color:var(--red)}
+.psych-card.p2{border-top-color:var(--orange)}
+.psych-card.p3{border-top-color:var(--gold)}
+.psych-card.p4{border-top-color:var(--purple)}
+.psych-card.p5{border-top-color:var(--blue)}
+.psych-card.p6{border-top-color:var(--green)}
+.psych-icon{font-size:2rem;margin-bottom:1rem}
+.psych-title{font-weight:700;font-size:1rem;margin-bottom:8px}
+.psych-desc{font-size:13px;color:var(--muted);line-height:1.7}
+
+/* WINNERS LOSERS */
+.wl-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.wl-card{border-radius:20px;padding:2rem;border:1px solid}
+.winner{background:rgba(46,194,126,0.05);border-color:rgba(46,194,126,0.2)}
+.loser{background:rgba(230,57,70,0.05);border-color:rgba(230,57,70,0.2)}
+.wl-title{
+  font-size:1.1rem;font-weight:700;margin-bottom:1.2rem;
+  display:flex;align-items:center;gap:8px;
+}
+.winner .wl-title{color:var(--green)}
+.loser .wl-title{color:var(--red)}
+.wl-item{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);
+  font-size:13px;
+}
+.wl-item:last-child{border:none}
+.wl-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:7px}
+.winner .wl-dot{background:var(--green)}
+.loser .wl-dot{background:var(--red)}
+
+/* BUDGET COMPARE */
+.budget-bars{display:flex;flex-direction:column;gap:1rem;margin-top:2rem}
+.budget-bar{display:flex;align-items:center;gap:1rem}
+.budget-label{min-width:180px;font-size:13px;text-align:right}
+.budget-track{flex:1;height:12px;background:rgba(255,255,255,0.05);border-radius:6px;overflow:hidden}
+.budget-fill{height:100%;border-radius:6px}
+.budget-num{min-width:100px;font-size:12px;color:var(--muted)}
+
+/* CRITICAL THINKING SECTION */
+.critical-box{
+  background:linear-gradient(135deg, rgba(167,139,250,0.08), rgba(76,201,240,0.05));
+  border:1px solid rgba(167,139,250,0.2);
+  border-radius:24px;
+  padding:3rem;
+  text-align:center;
+}
+.big-question{
+  font-family:'Tajawal',sans-serif;
+  font-size:clamp(1.4rem,3vw,2rem);
+  font-weight:700;
+  color:var(--purple);
+  margin-bottom:2rem;
+  line-height:1.4;
+}
+.rule-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-top:2rem}
+.rule{border-radius:14px;padding:1.2rem;text-align:center}
+.rule-ok{background:rgba(46,194,126,0.08);border:1px solid rgba(46,194,126,0.2)}
+.rule-warn{background:rgba(247,201,72,0.08);border:1px solid rgba(247,201,72,0.2)}
+.rule-danger{background:rgba(230,57,70,0.08);border:1px solid rgba(230,57,70,0.2)}
+.rule-title{font-weight:700;font-size:13px;margin-bottom:6px}
+.rule-ok .rule-title{color:var(--green)}
+.rule-warn .rule-title{color:var(--gold)}
+.rule-danger .rule-title{color:var(--red)}
+.rule-desc{font-size:12px;color:var(--muted)}
+
+/* IMAGES SECTION */
+.img-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem}
+.img-card{
+  border-radius:16px;overflow:hidden;position:relative;
+  aspect-ratio:4/3;background:var(--card);border:1px solid var(--border);
+}
+.img-placeholder{
+  width:100%;height:100%;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  font-size:3rem;
+  background:linear-gradient(135deg, var(--card), rgba(255,255,255,0.02));
+}
+.img-overlay{
+  position:absolute;bottom:0;left:0;right:0;
+  background:linear-gradient(transparent, rgba(0,0,0,0.85));
+  padding:1rem;font-size:12px;font-weight:600;
+}
+
+/* SEPARATOR */
+.sep{
+  width:100%;height:1px;
+  background:linear-gradient(90deg, transparent, var(--border), transparent);
+  margin:0;
+}
+
+/* FOOTER */
+footer{
+  text-align:center;padding:3rem 1.5rem;
+  border-top:1px solid var(--border);
+  color:var(--muted);font-size:13px;
+}
+
+/* ANIMATIONS */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(30px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes bounce{
+  0%,100%{transform:translateX(-50%) translateY(0)}
+  50%{transform:translateX(-50%) translateY(8px)}
+}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity 0.7s ease, transform 0.7s ease}
+.revealed{opacity:1;transform:none}
+
+/* RESPONSIVE */
+@media(max-width:700px){
+  .company-grid,.wl-grid{grid-template-columns:1fr}
+  .img-grid{grid-template-columns:1fr 1fr}
+  .hero-stats{gap:1.5rem}
+  .budget-label{min-width:120px;font-size:12px}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge">تحليل نقدي — للتلاميذ </div>
+    <h1>
+      وراء شاشة<br>
+      <span class="accent">Free Fire</span> و<span class="accent2">PUBG</span><br>
+      الحقيقة الكاملة
+    </h1>
+    <p class="hero-sub">من يصنع هذه الألعاب؟ كيف يجنون المليارات؟ ولماذا يستهدفون الأطفال تحديداً؟</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="num">+14 مليار $</span>
+        <span class="lbl">إيرادات مجمعة منذ 2017</span>
+      </div>
+      <div class="hero-stat">
+        <span class="num">130 مليون</span>
+        <span class="lbl">لاعب نشط شهرياً</span>
+      </div>
+      <div class="hero-stat">
+        <span class="num">130 دولة</span>
+        <span class="lbl">انتشار Free Fire</span>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint">▼ اكتشف الحقيقة</div>
+</section>
+
+<div class="sep"></div>
+
+<!-- VISUAL SECTION: Games -->
+<div class="section reveal">
+  <div class="section-tag">نظرة أولى</div>
+  <h2>ماذا نعرف عن هذه الألعاب؟</h2>
+  <div class="img-grid">
+    <div class="img-card">
+      <div class="img-placeholder" style="background:linear-gradient(135deg,#1a0a0a,#2d0d0d)">
+        <span>🔫</span>
+      </div>
+      <div class="img-overlay">Free Fire — الأكثر تحميلاً عالمياً 7 سنوات</div>
+    </div>
+    <div class="img-card">
+      <div class="img-placeholder" style="background:linear-gradient(135deg,#0a1020,#0d1830)">
+        <span>🪖</span>
+      </div>
+      <div class="img-overlay">PUBG — أكثر من 10 مليار $ إيرادات</div>
+    </div>
+    <div class="img-card">
+      <div class="img-placeholder" style="background:linear-gradient(135deg,#0a0a1a,#150d2d)">
+        <span>🌍</span>
+      </div>
+      <div class="img-overlay">لاعبون في 130 دولة حول العالم</div>
+    </div>
+  </div>
+  <div class="img-grid">
+    <div class="img-card">
+      <div class="img-placeholder" style="background:linear-gradient(135deg,#0d1a0a,#102010)">
+        <span>💰</span>
+      </div>
+      <div class="img-overlay">مليارات من بيع "أزياء" رقمية</div>
+    </div>
+    <div class="img-card">
+      <div class="img-placeholder" style="background:linear-gradient(135deg,#1a100a,#2d1a0a)">
+        <span>🧠</span>
+      </div>
+      <div class="img-overlay">علماء نفس يصممون الإدمان</div>
+    </div>
+    <div class="img-card">
+      <div class="img-placeholder" style="background:linear-gradient(135deg,#0a0a1a,#0d0d20)">
+        <span>📱</span>
+      </div>
+      <div class="img-overlay">مجانية للتحميل... مدفوعة من الداخل</div>
+    </div>
+  </div>
+</div>
+
+<div class="sep"></div>
+
+<!-- WHO MADE THEM -->
+<div class="section reveal">
+  <div class="section-tag">من وراء الكواليس</div>
+  <h2>من صنع هذه الألعاب؟</h2>
+  <div class="company-grid">
+    <div class="company-card freefire">
+      <div class="cc-header">
+        <div class="cc-logo">FF</div>
+        <div>
+          <div class="cc-name">Free Fire</div>
+          <div class="cc-origin">Garena / Sea Limited — سنغافورة</div>
+        </div>
+      </div>
+      <div class="cc-body">
+        <div class="cc-row"><span class="key">تأسست</span><span class="val">2009</span></div>
+        <div class="cc-row"><span class="key">إطلاق اللعبة</span><span class="val">2017</span></div>
+        <div class="cc-row"><span class="key">الموظفون</span><span class="val">+6,200 موظف</span></div>
+        <div class="cc-row"><span class="key">الانتشار</span><span class="val">130+ دولة</span></div>
+        <div class="cc-row"><span class="key">المؤسس</span><span class="val">Forrest Li</span></div>
+        <div class="cc-row"><span class="key">المدرجة في</span><span class="val">بورصة نيويورك NYSE</span></div>
+      </div>
+    </div>
+    <div class="company-card pubg">
+      <div class="cc-header">
+        <div class="cc-logo">PG</div>
+        <div>
+          <div class="cc-name">PUBG</div>
+          <div class="cc-origin">Krafton Inc. — كوريا الجنوبية</div>
+        </div>
+      </div>
+      <div class="cc-body">
+        <div class="cc-row"><span class="key">تأسست</span><span class="val">2007</span></div>
+        <div class="cc-row"><span class="key">إطلاق اللعبة</span><span class="val">2017</span></div>
+        <div class="cc-row"><span class="key">الموظفون</span><span class="val">+1,926 موظف</span></div>
+        <div class="cc-row"><span class="key">القيمة السوقية</span><span class="val">6.96 مليار $</span></div>
+        <div class="cc-row"><span class="key">المؤسس</span><span class="val">Chang Byung-gyu</span></div>
+        <div class="cc-row"><span class="key">المدرجة في</span><span class="val">البورصة الكورية KOSPI</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sep"></div>
+
+<!-- REVENUE -->
+<div class="section reveal">
+  <div class="section-tag">الأموال الضخمة</div>
+  <h2>كم يربحون؟</h2>
+  <div class="metric-grid">
+    <div class="metric">
+      <span class="m-val" style="color:var(--gold)">2.4 مليار $</span>
+      <span class="m-label">إيرادات PUBG 2025 — رقم قياسي</span>
+    </div>
+    <div class="metric">
+      <span class="m-val" style="color:var(--red)">408 مليون $</span>
+      <span class="m-label">إيرادات Free Fire 2024</span>
+    </div>
+    <div class="metric">
+      <span class="m-val" style="color:var(--purple)">+10 مليار $</span>
+      <span class="m-label">إجمالي عمر PUBG منذ 2017</span>
+    </div>
+    <div class="metric">
+      <span class="m-val" style="color:var(--blue)">+4 مليار $</span>
+      <span class="m-label">إجمالي عمر Free Fire</span>
+    </div>
+  </div>
+
+  <div class="revenue-section">
+    <div style="margin-bottom:1.5rem">
+      <div style="font-size:13px;color:var(--muted);margin-bottom:8px">من أين يأتي كل هذا المال؟</div>
+    </div>
+    <div class="bar-section">
+      <div class="bar-item">
+        <div class="bar-meta">
+          <span>شراء الشخصيات والأزياء (Skins)</span>
+          <span style="color:var(--purple);font-weight:700">45%</span>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:45%;background:var(--purple)"></div>
+        </div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-meta">
+          <span>العملات الداخلية (UC / Diamonds)</span>
+          <span style="color:var(--red);font-weight:700">30%</span>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:30%;background:var(--red)"></div>
+        </div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-meta">
+          <span>البطاقات الموسمية (Battle Pass)</span>
+          <span style="color:var(--blue);font-weight:700">15%</span>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:15%;background:var(--blue)"></div>
+        </div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-meta">
+          <span>الإعلانات والشراكات</span>
+          <span style="color:var(--green);font-weight:700">10%</span>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:10%;background:var(--green)"></div>
+        </div>
+      </div>
+    </div>
+    <div style="background:rgba(230,57,70,0.08);border:1px solid rgba(230,57,70,0.2);border-radius:12px;padding:1rem;margin-top:1rem;font-size:13px;color:#f09090">
+      ملاحظة ناقدة: اللعبة مجانية للتحميل، لأن هدفها ليس بيعك اللعبة — بل بيعك شيئاً داخلها كل أسبوع.
+    </div>
+  </div>
+</div>
+
+<div class="sep"></div>
+
+<!-- BUDGET COMPARISON -->
+<div class="section reveal">
+  <div class="section-tag">المقارنة الصادمة</div>
+  <h2>ميزانية الشركات مقابل ميزانيات الدول</h2>
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2rem">
+    <div class="budget-bars">
+      <div class="budget-bar">
+        <div class="budget-label">ميزانية المغرب 2025</div>
+        <div class="budget-track">
+          <div class="budget-fill" style="width:100%;background:var(--green)"></div>
+        </div>
+        <div class="budget-num">58 مليار $</div>
+      </div>
+      <div class="budget-bar">
+        <div class="budget-label">Sea Limited (Garena)</div>
+        <div class="budget-track">
+          <div class="budget-fill" style="width:29%;background:var(--red)"></div>
+        </div>
+        <div class="budget-num">16.8 مليار $</div>
+      </div>
+      <div class="budget-bar">
+        <div class="budget-label">ميزانية تونس 2025</div>
+        <div class="budget-track">
+          <div class="budget-fill" style="width:24%;background:var(--green)"></div>
+        </div>
+        <div class="budget-num">~14 مليار $</div>
+      </div>
+      <div class="budget-bar">
+        <div class="budget-label">Krafton (PUBG) إيرادات 2025</div>
+        <div class="budget-track">
+          <div class="budget-fill" style="width:4%;background:var(--gold)"></div>
+        </div>
+        <div class="budget-num">2.4 مليار $</div>
+      </div>
+      <div class="budget-bar">
+        <div class="budget-label">ميزانية موريتانيا 2025</div>
+        <div class="budget-track">
+          <div class="budget-fill" style="width:5%;background:var(--green)"></div>
+        </div>
+        <div class="budget-num">~3 مليار $</div>
+      </div>
+    </div>
+    <div style="margin-top:1.5rem;padding:1rem;background:rgba(247,201,72,0.06);border:1px solid rgba(247,201,72,0.15);border-radius:12px;font-size:13px;color:#f7c948">
+      شركة ألعاب واحدة قد تساوي ميزانية دولة بأكملها. هذا المال يأتي من ملايين الأسر في الدول النامية.
+    </div>
+  </div>
+</div>
+
+<div class="sep"></div>
+
+<!-- PSYCHOLOGY -->
+<div class="section reveal">
+  <div class="section-tag">علم النفس والإدمان</div>
+  <h2>لماذا لا تستطيع التوقف عن اللعب؟</h2>
+  <div class="psych-grid">
+    <div class="psych-card p1">
+      <div class="psych-icon">🧪</div>
+      <div class="psych-title" style="color:var(--red)">الدوبامين</div>
+      <div class="psych-desc">كل فوز يُطلق هرمون السعادة في الدماغ — تماماً كما تفعل بعض المواد المخدرة. الشركات تعرف هذا وتصمم الفوز بعناية.</div>
+    </div>
+    <div class="psych-card p2">
+      <div class="psych-icon">📅</div>
+      <div class="psych-title" style="color:var(--orange)">البطاقة الموسمية</div>
+      <div class="psych-desc">تُجبرك على اللعب كل يوم لإنهائها قبل انتهاء الموسم. خلقوا "إلزاماً" يومياً وهمياً لا يوجد في الحياة الحقيقية.</div>
+    </div>
+    <div class="psych-card p3">
+      <div class="psych-icon">👥</div>
+      <div class="psych-title" style="color:var(--gold)">الضغط الاجتماعي</div>
+      <div class="psych-desc">حين يلعب أصدقاؤك تشعر بالإقصاء. اللعبة استخدمت صداقاتك سلاحاً لإبقائك مرتبطاً بها.</div>
+    </div>
+    <div class="psych-card p4">
+      <div class="psych-icon">∞</div>
+      <div class="psych-title" style="color:var(--purple)">المستويات اللانهائية</div>
+      <div class="psych-desc">دائماً هناك هدف آخر للوصول إليه. هذا مُصمَّم لإبقائك في حالة "لعبة واحدة أخيرة" إلى ما لا نهاية.</div>
+    </div>
+    <div class="psych-card p5">
+      <div class="psych-icon">✨</div>
+      <div class="psych-title" style="color:var(--blue)">الندرة المصطنعة</div>
+      <div class="psych-desc">أزياء "حصرية لمدة 24 ساعة فقط" تُحدث خوف الفوات (FOMO) وتدفعك لإنفاق المال دون تفكير.</div>
+    </div>
+    <div class="psych-card p6">
+      <div class="psych-icon">🎁</div>
+      <div class="psych-title" style="color:var(--green)">وهم المجانية</div>
+      <div class="psych-desc">التحميل مجاني لأن هدفه جذبك. حين تتعلق باللعبة وشخصياتها تصبح مستعداً للدفع من أجل "التميز".</div>
+    </div>
+  </div>
+</div>
+
+<div class="sep"></div>
+
+<!-- WINNERS & LOSERS -->
+<div class="section reveal">
+  <div class="section-tag">التحليل النقدي</div>
+  <h2>من الرابح ومن الخاسر؟</h2>
+  <div class="wl-grid">
+    <div class="wl-card winner">
+      <div class="wl-title">
+        <span>▲</span> الرابح
+      </div>
+      <div class="wl-item"><div class="wl-dot"></div><span>المساهمون في الشركة: مليارات الأرباح سنوياً</span></div>
+      <div class="wl-item"><div class="wl-dot"></div><span>Google وApple: 30% من كل عملية شراء</span></div>
+      <div class="wl-item"><div class="wl-dot"></div><span>صناع المحتوى على يوتيوب: يربحون من مشاهداتك</span></div>
+      <div class="wl-item"><div class="wl-dot"></div><span>شركات الإعلان: تبيع منتجاتها داخل اللعبة</span></div>
+    </div>
+    <div class="wl-card loser">
+      <div class="wl-title">
+        <span>▼</span> الخاسر
+      </div>
+      <div class="wl-item"><div class="wl-dot"></div><span>التلميذ: وقت الدراسة يتآكل، العيون تتعب، النوم يتأخر</span></div>
+      <div class="wl-item"><div class="wl-dot"></div><span>الأسرة: خلافات، إنفاق خفي، عزلة الأبناء</span></div>
+      <div class="wl-item"><div class="wl-dot"></div><span>الصحة النفسية: عدوانية متزايدة وإحباط متكرر</span></div>
+      <div class="wl-item"><div class="wl-dot"></div><span>المجتمع: جيل مستهلك بدل منتج ومبدع</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="sep"></div>
+
+<!-- COMPARISON TABLE -->
+<div class="section reveal">
+  <div class="section-tag">مقارنة مفصلة</div>
+  <h2>Free Fire مقابل PUBG — وجهاً لوجه</h2>
+  <div class="compare-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>المعيار</th>
+          <th>Free Fire</th>
+          <th>PUBG</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>الشركة الأم</td>
+          <td>Garena / Sea Limited</td>
+          <td>Krafton Inc.</td>
+        </tr>
+        <tr>
+          <td>إيرادات 2024-2025</td>
+          <td><span class="tag tag-red">408 مليون $</span></td>
+          <td><span class="tag tag-gold">2.4 مليار $</span></td>
+        </tr>
+        <tr>
+          <td>المستخدمون الشهريون</td>
+          <td>130 مليون</td>
+          <td>+50 مليون</td>
+        </tr>
+        <tr>
+          <td>الفئة المستهدفة</td>
+          <td>الدول النامية، الهواتف الضعيفة</td>
+          <td>الدول المتقدمة، الحاسوب والهاتف</td>
+        </tr>
+        <tr>
+          <td>عمر اللاعب المستهدف</td>
+          <td><span class="tag tag-red">12-20 سنة</span></td>
+          <td><span class="tag tag-red">16-25 سنة</span></td>
+        </tr>
+        <tr>
+          <td>تصنيف الإدمان</td>
+          <td><span class="tag tag-red">مرتفع جداً</span></td>
+          <td><span class="tag tag-red">مرتفع جداً</span></td>
+        </tr>
+        <tr>
+          <td>الإنفاق المتوسط للاعب</td>
+          <td>5-50$ شهرياً</td>
+          <td>10-100$ شهرياً</td>
+        </tr>
+        <tr>
+          <td>تأثير العنف</td>
+          <td><span class="tag tag-gold">متوسط</span></td>
+          <td><span class="tag tag-red">مرتفع</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="sep"></div>
+
+<!-- CRITICAL THINKING CONCLUSION -->
+<div class="section reveal">
+  <div class="section-tag">خلاصة التفكير النقدي</div>
+  <h2>ما الذي يجب أن تفعله الآن؟</h2>
+  <div class="critical-box">
+    <div class="big-question">
+      السؤال ليس "هل تلعب؟"<br>
+      السؤال هو: "من يتحكم في وقتك — أنت أم الشركة؟"
+    </div>
+    <p style="color:var(--muted);font-size:14px;margin-bottom:2rem">هناك فريق من المهندسين وعلماء النفس يعمل 24 ساعة لإبقائك ملتصقاً بالشاشة. الوعي بهذا هو أول خطوة في التفكير النقدي.</p>
+    <div class="rule-grid">
+      <div class="rule rule-ok">
+        <div class="rule-title">مقبول</div>
+        <div class="rule-desc">ساعة أو ساعتان في أيام الراحة بعد إنجاز الواجبات</div>
+      </div>
+      <div class="rule rule-warn">
+        <div class="rule-title">تحذير</div>
+        <div class="rule-desc">اللعب كل يوم بدون حد زمني محدد</div>
+      </div>
+      <div class="rule rule-danger">
+        <div class="rule-title">خطر</div>
+        <div class="rule-desc">إنفاق مال حقيقي، سهر حتى الفجر، إهمال الدراسة</div>
+      </div>
+      <div class="rule rule-danger">
+        <div class="rule-title">إدمان</div>
+        <div class="rule-desc">الغضب عند الإيقاف وعدم القدرة على التوقف</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div style="font-size:1.5rem;margin-bottom:1rem">🎮</div>
+  <p>هذا التحليل للأغراض التعليمية — لتطوير التفكير النقدي لدى تلاميذ الإعدادي</p>
+  <p style="margin-top:8px;color:#555">المصادر: Sensor Tower، PitchBook، Sea Limited، Krafton Annual Reports 2025</p>
+</footer>
+
+<script>
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting) {
+      e.target.classList.add('revealed');
+      observer.unobserve(e.target);
+    }
+  });
+}, {threshold:0.1});
+reveals.forEach(r => observer.observe(r));
+</script>
+</body>
+</html>
